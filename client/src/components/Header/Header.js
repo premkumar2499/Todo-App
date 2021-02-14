@@ -11,10 +11,10 @@ const Header = () =>{
     }
     return(
         <div>
-            <nav class="navbar navbar-light">
-                <div class="nav-brand">
-                    <button class="navbar-toggler" onClick={handleMenu} type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
+            <nav className="navbar navbar-light">
+                <div className="nav-brand">
+                    <button className="navbar-toggler" onClick={handleMenu} type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03" aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
+                        <span className="navbar-toggler-icon icon"></span>
                     </button>
                 </div>
                 <div class="nav-title">

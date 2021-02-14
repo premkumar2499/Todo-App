@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { Link, useHistory } from "react-router-dom";
 import Todos from '../Todos/index';
-import Menu from './Menu';
+
 import UserContext from "../../context/userContext";
 import Axios from 'axios'
 import Loading from '../Loading/Loading';
@@ -11,6 +11,7 @@ const Home = () =>{
     const {userData, setUseData,loading,setLoading} = useContext(UserContext);
     const history = useHistory();
     useEffect(()=>{
+        setLoading(true);
         if(userData.status === 'pending'){
             Axios.get("/api/auth/verification/get-activation-email", { headers: {"Authorization" : `Bearer ${userData.token}`} })
                 .then((res)=>{
@@ -21,16 +22,12 @@ const Home = () =>{
                 })
             history.push('/verify-mail');
         }   
+        setLoading(false);
         console.log(userData);
     })
     
-    
-    const [isOpen,setIsOpen] = useState(false);
-    const handleMenu = () =>{
-        setIsOpen(!isOpen);
-    }
     return(
-        <div>
+        <div className="d-flex flex-column justify-content-center align-items-center vh-100">
             { loading ? (
                 // <h1>Loading...</h1>
                 <Loading/>
@@ -39,42 +36,16 @@ const Home = () =>{
                     <h1>Hi {userData.userName}</h1>
                     ) : (
                         <>
-                            
-                            <h1>Welcome to your personalized TODO APP</h1>
-                            <div className="btn-group">
-                                <button class="login"><Link to="/login">Log in</Link></button>  
-                                <button class="register"><Link to="/register">Register</Link></button>  
+                            <div className="d-flex flex-column justify-content-evenly align-items-center h-25">
+                                <h2 className="text-center">Welcome to your personalized TODO APP</h2>
+                                <Link className="btn btn-outline-primary fs-4" to="/login">Log in</Link>  
+                                <Link className="btn btn-outline-primary" to="/register">Register</Link>
                             </div>
                         </>
                    )
                 )
             }
-            
         </div>
-        
-        // <div>
-        //     <nav className="navbar">
-        //         <div className="nav-brand" onClick={()=>handleMenu()}>
-        //             T
-        //         </div>
-        //         <div className="nav-title">
-        //             Prem Todo
-        //         </div>
-        //     </nav>
-        //     {isOpen && <Menu handleMenu={handleMenu}/>}
-        //     <Todos/>
-        //     <button class="add-todo">ADD TODO</button>  
-        // </div>
-    //     <div className="page">
-    //   {userData.user ? (
-    //     <h1>Welcome {userData.user.displayName}</h1>
-    //   ) : (
-    //     <>
-    //       <h2>You are not logged in</h2>
-    //       <Link to="/login">Log in</Link>
-    //     </>
-    //   )}
-    // </div>
     )
 }
 

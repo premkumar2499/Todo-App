@@ -18,7 +18,7 @@ const Login = () =>{
         history.push("/");
       }
       else if(userData.status === 'pending'){
-        history.push("/verifymail");
+        history.push("/verify-mail");
       }
     });
     
@@ -73,28 +73,6 @@ const Login = () =>{
                  <Loading/>
              ) : (
                 <>
-                    {error}
-                    {/* <h2>Login</h2>
-                    <form className="form" onSubmit={submit}>
-                        <input
-                        id="email"
-                        type="email"
-                        placeholder="E-mail"
-                        onChange={(e) => setEmail(e.target.value)}
-                        />
-
-                        
-                        <input
-                        id="register-password"
-                        type="password"
-                        placeholder="Password"
-                        onChange={(e) => setPassword(e.target.value)}
-                        />
-
-                        <input type="submit" value="Login" />
-                        <p>Dont have an Account?</p><Link to="/register">Log in</Link>
-                        <Link to="/forget-password">Forgetten-password?</Link>
-                    </form> */}
                     <div className="modal-dialog modal-dialog-centered" role="document">
                       <div className="modal-content">
                         <div className="modal-header">
@@ -107,6 +85,7 @@ const Login = () =>{
                             </div>
                           </div>
                           <div className="modal-body">
+                              {error}
                               <form onSubmit={submit}>
                               <div className="form-group " id="formGroup">
                                       <input

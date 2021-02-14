@@ -75,26 +75,33 @@ router.post("/register", async (req, res) => {
     } = req.body;
     let errors = [];
 
+    try{
+        if (!firstName || !lastName || !email || !password || !confirmPassword) {
+            errors.push({ msg: "Please fill in all fields!" });
+            console.log(errors);
+        }
+        if (password != confirmPassword) {
+            errors.push({ msg: "The entered passwords do not match!" });
+        }
+        if(!email.match(emailRegex)){
+            errors.push({
+                msg:
+                    "Invalid Email",
+            });
+        }
+        if (!password.match(passwordRegex)){
+            errors.push({
+                msg:
+                    "Your password must be at least 6 characters long and contain a lowercase letter, an uppercase letter, a numeric digit and a special character.",
+            });
+        }
+    }
+    catch(err){
+        res.json({ success: false, errors });
+    }
     // Check if data is correctly provided
-    if (!firstName || !lastName || !email || !password || !confirmPassword) {
-        errors.push({ msg: "Please fill in all fields!" });
-        console.log(errors);
-    }
-    if (password != confirmPassword) {
-        errors.push({ msg: "The entered passwords do not match!" });
-    }
-    if(!email.match(emailRegex)){
-        errors.push({
-            msg:
-                "Invalid Email",
-        });
-    }
-    if (!password.match(passwordRegex)){
-        errors.push({
-            msg:
-                "Your password must be at least 6 characters long and contain a lowercase letter, an uppercase letter, a numeric digit and a special character.",
-        });
-    }
+    
+    
 
     if (errors.length > 0) {
         res.json({ success: false, errors });

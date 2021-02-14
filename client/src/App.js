@@ -13,6 +13,7 @@ import VerifyMail from './components/auth/VerifyMail';
 import ForgetPassword from './components/auth/ForgetPassword';
 import ResetPassword from './components/auth/ResetPassword'
 import Header from './components/Header/Header'
+import Logout from './components/auth/Logout';
 
 // export const UserContext = React.createContext()
 
@@ -40,14 +41,17 @@ function App() {
       );
       
       if (tokenRes.data) {
-        const userRes = await Axios.get("/api/auth/todos", { headers: {"Authorization" : `Bearer ${token}`}
-        });
+        let userRes;
+        if(tokenRes.data.userStatus==='active'){
+          userRes = await Axios.get("/api/auth/todos", { headers: {"Authorization" : `Bearer ${token}`}
+        });          
+        }
         // console.log(userRes);
         setUserData({
           token,
           status: tokenRes.data.userStatus,
-          userName :userRes.data.name ? userRes.data.name : undefined,
-          todos : userRes.data.todos ? userRes.data.todos : []
+          userName :userRes ? userRes.data.name : undefined,
+          todos : userRes ? userRes.data.todos : []
         });
       }
       setLoading(false);
@@ -73,6 +77,7 @@ function App() {
               <Route path="/verify-account/:userId/:secretCode" component={ActivateAccount} />
               <Route path="/forget-password" component={ForgetPassword} />
               <Route path="/reset-password" component={ResetPassword} />
+              <Route path="/logout" component={Logout}/>
             </Switch>
           {/* </div> */}
           </main>

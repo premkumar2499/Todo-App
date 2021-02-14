@@ -17,17 +17,17 @@ const Register = () =>{
     
 
     const history = useHistory();
-    
     if(userData.status === 'active'){
       history.push("/");
     }
     else if(userData.status === 'pending'){
-      history.push("/verifymail");
+      history.push("/verify-mail");
     }
     const submit = async (e) => {
         e.preventDefault();
     
         try {
+          setLoading(true);
           const newUser = { firstName, lastName, email, password, confirmPassword };
           console.log(newUser);
           
@@ -35,7 +35,7 @@ const Register = () =>{
           if(regUser.data.errors){
             const err = regUser.data.errors.map(e =>{
               return (
-                <p>{e.msg}</p>
+                <div class="alert alert-danger">{e.msg}</div>
               )
             })
             setError(err);
@@ -49,20 +49,12 @@ const Register = () =>{
             history.push("/verify-mail");
           }
           console.log(regUser.data);
-        //   const loginRes = await Axios.post("http://localhost:5000/users/login", {
-        //     email,
-        //     password,
-        //   });
-        //   setUserData({
-        //     token: loginRes.data.token,
-        //     user: loginRes.data.user,
-        //   });
-        //   localStorage.setItem("auth-token", loginRes.data.token);
-          
+          setLoading(false);
         } catch (err) {
             console.log(err)
-        //   err.response.data.msg && setError(err.response.data.msg);
+            err.response.data.msg && setError(err.response.data.msg);
         }
+        
       };
 
     return(
@@ -71,7 +63,7 @@ const Register = () =>{
             <Loading/>
           ):(
             <>
-                <div className="modal-dialog modal-dialog-centered" role="document">
+                <div className="modal-dialog modal-dialog-centered custom-box" role="document">
                       <div className="modal-content">
                         <div className="modal-header">
                           <div className="container">
@@ -83,8 +75,9 @@ const Register = () =>{
                             </div>
                           </div>
                           <div className="modal-body">
+                            {error}
                             <form onSubmit={submit}>
-                              <div className="form-group " id="formGroup">
+                              <div className="form-group mb-1" id="formGroup">
                                 <input
                                 id="first-name"
                                 placeholder="First Name"
@@ -94,7 +87,7 @@ const Register = () =>{
                                 />
                               </div>
 
-                              <div className="form-group " id="formGroup">
+                              <div className="form-group mb-1" id="formGroup">
                                 <input
                                 id="last-name"
                                 placeholder="Last Name"
@@ -103,7 +96,7 @@ const Register = () =>{
                                 onChange={(e) => setLastName(e.target.value)}
                                 />
                               </div>
-                              <div className="form-group" id="formGroup">
+                              <div className="form-group mb-1" id="formGroup">
                                       <input
                                         id="email"
                                         type="email"
@@ -113,7 +106,7 @@ const Register = () =>{
                                         onChange={(e) => setEmail(e.target.value)}
                                       />
                               </div>
-                              <div className="form-group" id="formGroup">
+                              <div className="form-group mb-1" id="formGroup">
                                   <input
                                       id="password"
                                       type="password"
@@ -122,7 +115,7 @@ const Register = () =>{
                                       onChange={(e) => setPassword(e.target.value)}
                                   />
                               </div>
-                              <div className="form-group" id="formGroup">
+                              <div className="form-group mb-1" id="formGroup">
                                 <input
                                   type="password"
                                   placeholder="Confirm Password"

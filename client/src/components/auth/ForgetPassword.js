@@ -3,6 +3,7 @@ import { useHistory } from "react-router-dom";
 import UserContext from "../../context/userContext";
 import EmailContext from '../../context/userContext';
 import Axios from "axios";
+import Loading from "../Loading/Loading";
 
 
 
@@ -27,7 +28,9 @@ const ForgetPassword = () =>{
         if(!passwordRes.data.success){
             const err = passwordRes.data.errors.map((e,index)=>{
                 return(
-                    <p key={index}>{e.msg}</p>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert" key={index}>
+                        <small>{e.msg}</small>
+                    </div>
                 )
             })
             setError(err);
@@ -45,23 +48,33 @@ const ForgetPassword = () =>{
     
 
     return(
-            <div className="page">
+            <div className="d-flex justify-content-center align-items-center vh-100">
                     { loading ? (
-                        <h1>Loading...</h1>
+                        <Loading/>
                     ) : (
                         <>
-                            {error}
-                            <h2>Forget Password</h2>
-                            <form className="form" onSubmit={submit}>
-                                <input
-                                id="email"
-                                type="email"
-                                placeholder="E-mail"
-                                onChange={(e) => setEmail(e.target.value)}
-                                />
+                            <div className="modal-dialog modal-dialog-centered" role="document">
+                                <div className="modal-content">
+                                    
+                                    <div className="modal-header">
+                                        <p className="fs-3">Get Password Reset Code</p>
+                                    </div>
+                                    <div className="modal-body">
+                                        {error}
+                                        <form onSubmit={submit}>
+                                            <input
+                                            id="email"
+                                            type="email"
+                                            className="form-control"
+                                            placeholder="Enter E-mail"
+                                            onChange={(e) => setEmail(e.target.value)}
+                                            />
 
-                                <input type="submit" value="Send Code" />
-                            </form>
+                                            <input type="submit" className="btn btn-success mt-4" value="Send Code" />
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
                         </>
                         )
                     }
